@@ -1,0 +1,118 @@
+<div class="max-w-6xl mx-auto px-4 py-6 grid gap-6 md:grid-cols-[2fr_3fr]">
+  <section class="bg-[var(--card-bg)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <h2 class="text-lg font-semibold mb-3">Session Management</h2>
+
+    <button class="btn-primary mb-3" (click)="createSession()" [disabled]="loading">
+      {{ loading ? 'Creating Session…' : 'Create New Quiz Session' }}
+    </button>
+
+    <div *ngIf="error" class="text-red-600 text-sm mb-2">{{ error }}</div>
+
+    <ng-container *ngIf="session">
+      <div class="text-sm space-y-1 mb-4">
+        <div><span class="font-medium">Session ID:</span> {{ session.sessionId }}</div>
+        <div><span class="font-medium">Join URL:</span> {{ joinUrl }}</div>
+        <div><span class="font-medium">Participants Joined:</span> {{ session.participants.length }}</div>
+      </div>
+
+      <div *ngIf="qrDataUrl" class="border border-[var(--border)] rounded-lg inline-block p-2 bg-white mb-4">
+        <img [src]="qrDataUrl" alt="Join QR code" class="w-40 h-40 object-contain">
+      </div>
+    </ng-container>
+
+    <p class="text-xs text-[var(--text-muted)]">
+      Share this QR code or Join URL with participants. They can open it on their phones to join the quiz.
+    </p>
+  </section>
+
+  <section class="bg-[var(--card-bg)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <h2 class="text-lg font-semibold mb-3">Quiz Control</h2>
+
+    <ng-container *ngIf="!session">
+      <p class="text-sm text-[var(--text-muted)]">
+        Create a session to start hosting an AI quiz.
+      </p>
+    </ng-container>
+
+    <ng-container *ngIf="session">
+      <div class="mb-4">
+        <div class="text-sm mb-2">
+          Status:
+          <span class="font-medium">
+            {{ session.status === 'NOT_STARTED' ? 'Not started' :
+            session.status === 'IN_PROGRESS' ? 'In progress' :
+            'Finished' }}
+          </span>
+        </div>
+
+        <button *ngIf="session.status === 'NOT_STARTED'" class="btn-primary" (click)="startQuiz()"
+          [disabled]="session.participants.length === 0">
+          Start Quiz
+        </button>
+
+        <div *ngIf="session.status === 'IN_PROGRESS'" class="space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="font-medium">
+              Question {{ session.currentQuestionIndex + 1 }} of {{ session.questions.length }}
+            </div>
+            <button class="btn-secondary" (click)="nextQuestion()">
+              Next Question
+            </button>
+          </div>
+
+          <div *ngIf="currentQuestion" class="question-card">
+            <div class="text-sm uppercase tracking-wide text-[var(--text-muted)] mb-1">
+              {{ currentQuestion.type === 'MCQ' ? 'Multiple Choice' : 'True / False' }}
+            </div>
+            <div class="font-medium mb-2">
+              {{ currentQuestion.text }}
+            </div>
+            <ul class="list-disc list-inside text-sm space-y-1">
+              <li *ngFor="let opt of currentQuestion.options; index as i">
+                {{ 'ABCD'[i] || '' }}. {{ opt }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-sm text-[var(--text-muted)]">
+            {{ answeredCount }} of {{ session.participants.length }} participants have submitted.
+          </div>
+        </div>
+
+        <div *ngIf="session.status === 'FINISHED'" class="space-y-3">
+          <h3 class="font-semibold text-base">Leaderboard</h3>
+          <button class="btn-secondary mb-2" (click)="downloadCsv()">Download CSV</button>
+
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr>
+                <th class="th">Rank</th>
+                <th class="th text-left">Participant</th>
+                <th class="th">Score</th>
+                <th class="th">Correct</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of leaderboard; index as i" [class.top1]="i === 0" [class.top2]="i === 1"
+                [class.top3]="i === 2">
+                <td class="td text-center">
+                  <span *ngIf="i === 0">🥇</span>
+                  <span *ngIf="i === 1">🥈</span>
+                  <span *ngIf="i === 2">🥉</span>
+                  <span *ngIf="i > 2">{{ i + 1 }}</span>
+                </td>
+                <td class="td">{{ p.name }}</td>
+                <td class="td text-center">{{ p.score }}</td>
+                <td class="td text-center">{{ p.correctCount }}/10</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p class="text-xs text-[var(--text-muted)] mt-2">
+            Max possible score: 100 points (10 questions × 10 points).
+          </p>
+        </div>
+      </div>
+    </ng-container>
+  </section>
+</div>

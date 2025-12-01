@@ -1,0 +1,59 @@
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 1.5rem;
+}
+
+.section-title {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.session-meta {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 0.3rem;
+}
+
+.qr-box {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 14px;
+  background: #f9fafb;
+}
+
+.question-card {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: #f1f5f9;
+  font-size: 0.95rem;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 0.5rem;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.leaderboard-table tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.rank-badge {
+  font-weight: bold;
+  text-align: center;
+}
