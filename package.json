@@ -5,9 +5,7 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
-    "ng-build": "ng build --configuration production",
-    "prod-start": "node server.js",
-    "cloud-run-deploy": "npm run ng-build && npm run prod-start"
+    "ng-build-gh": "ng build --configuration production --base-href=https://vasikaranvk.github.io/AI-Quiz-App-FE"
   },
   "dependencies": {
     "@angular/animations": "^17.3.0",
