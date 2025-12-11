@@ -5,7 +5,8 @@ import { Participant, Session } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private baseUrl = 'https://ai-quiz-backend-1064856182916.asia-south1.run.app/api';
+  // private baseUrl = 'https://ai-quiz-backend-1064856182916.asia-south1.run.app/api';
+  private baseUrl = 'https://ai-quiz-app-be.onrender.com/api'
   // private baseUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) { }
